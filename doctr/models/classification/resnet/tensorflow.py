@@ -7,9 +7,7 @@ from copy import deepcopy
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import tensorflow as tf
-from tensorflow.keras import layers
-from tensorflow.keras.applications import ResNet50
-from tensorflow.keras.models import Sequential
+from keras import Sequential, applications, layers
 
 from doctr.datasets import VOCABS
 
@@ -24,35 +22,35 @@ default_cfgs: Dict[str, Dict[str, Any]] = {
         "std": (0.299, 0.296, 0.301),
         "input_shape": (32, 32, 3),
         "classes": list(VOCABS["french"]),
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/resnet18-f42d3854.weights.h5&src=0",
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/resnet18-4138682e.weights.h5",
     },
     "resnet31": {
         "mean": (0.694, 0.695, 0.693),
         "std": (0.299, 0.296, 0.301),
         "input_shape": (32, 32, 3),
         "classes": list(VOCABS["french"]),
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/resnet31-ab75f78c.weights.h5&src=0",
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/resnet31-61808f41.weights.h5",
     },
     "resnet34": {
         "mean": (0.694, 0.695, 0.693),
         "std": (0.299, 0.296, 0.301),
         "input_shape": (32, 32, 3),
         "classes": list(VOCABS["french"]),
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/resnet34-03967df9.weights.h5&src=0",
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/resnet34-2288ee52.weights.h5",
     },
     "resnet50": {
         "mean": (0.694, 0.695, 0.693),
         "std": (0.299, 0.296, 0.301),
         "input_shape": (32, 32, 3),
         "classes": list(VOCABS["french"]),
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/resnet50-82358f34.weights.h5&src=0",
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/resnet50-82358f34.weights.h5",
     },
     "resnet34_wide": {
         "mean": (0.694, 0.695, 0.693),
         "std": (0.299, 0.296, 0.301),
         "input_shape": (32, 32, 3),
         "classes": list(VOCABS["french"]),
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/resnet34_wide-b18fdf79.weights.h5&src=0",
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/resnet34_wide-4c788e90.weights.h5",
     },
 }
 
@@ -350,7 +348,7 @@ def resnet50(pretrained: bool = False, **kwargs: Any) -> ResNet:
     _cfg["input_shape"] = kwargs["input_shape"]
     kwargs.pop("classes")
 
-    model = ResNet50(
+    model = applications.ResNet50(
         weights=None,
         include_top=True,
         pooling=True,

@@ -5,10 +5,6 @@
 
 import os
 
-from doctr.file_utils import ensure_keras_v2
-
-ensure_keras_v2()
-
 from doctr.file_utils import CLASS_NAME
 
 os.environ["USE_TF"] = "1"
@@ -18,7 +14,7 @@ import time
 from pathlib import Path
 
 import tensorflow as tf
-from tensorflow.keras import mixed_precision
+from keras import mixed_precision
 from tqdm import tqdm
 
 gpu_devices = tf.config.list_physical_devices("GPU")

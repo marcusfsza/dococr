@@ -6,8 +6,7 @@
 from copy import deepcopy
 from typing import Any, Dict, List, Optional, Tuple
 
-from tensorflow.keras import layers
-from tensorflow.keras.models import Sequential
+from keras import Sequential, layers
 
 from doctr.datasets import VOCABS
 
@@ -22,7 +21,7 @@ default_cfgs: Dict[str, Dict[str, Any]] = {
         "std": (1.0, 1.0, 1.0),
         "input_shape": (32, 32, 3),
         "classes": list(VOCABS["french"]),
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/vgg16_bn_r-b4d69212.weights.h5&src=0",
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/vgg16_bn_r-b4d69212.weights.h5",
     },
 }
 

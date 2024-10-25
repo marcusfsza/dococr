@@ -7,8 +7,7 @@ from copy import deepcopy
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import tensorflow as tf
-from tensorflow.keras import layers
-from tensorflow.keras.models import Model, Sequential
+from keras import Model, Sequential, layers
 
 from doctr.datasets import VOCABS
 
@@ -23,22 +22,22 @@ default_cfgs: Dict[str, Dict[str, Any]] = {
         "mean": (0.694, 0.695, 0.693),
         "std": (0.299, 0.296, 0.301),
         "input_shape": (32, 128, 3),
-        "vocab": VOCABS["legacy_french"],
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/crnn_vgg16_bn-9c188f45.weights.h5&src=0",
+        "vocab": VOCABS["french"],
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/crnn_vgg16_bn-41bbe57b.weights.h5",
     },
     "crnn_mobilenet_v3_small": {
         "mean": (0.694, 0.695, 0.693),
         "std": (0.299, 0.296, 0.301),
         "input_shape": (32, 128, 3),
         "vocab": VOCABS["french"],
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/crnn_mobilenet_v3_small-54850265.weights.h5&src=0",
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/crnn_mobilenet_v3_small-b4bb2858.weights.h5",
     },
     "crnn_mobilenet_v3_large": {
         "mean": (0.694, 0.695, 0.693),
         "std": (0.299, 0.296, 0.301),
         "input_shape": (32, 128, 3),
         "vocab": VOCABS["french"],
-        "url": "https://doctr-static.mindee.com/models?id=v0.9.0/crnn_mobilenet_v3_large-c64045e5.weights.h5&src=0",
+        "url": "https://github.com/mindee/doctr/releases/download/v0.10.0/crnn_mobilenet_v3_large-1eac49ae.weights.h5",
     },
 }
 
@@ -246,6 +245,7 @@ def _crnn(
     # Build the model
     model = CRNN(feat_extractor, cfg=_cfg, **kwargs)
     _build_model(model)
+
     # Load pretrained parameters
     if pretrained:
         # The given vocab differs from the pretrained model => skip the mismatching layers for fine tuning
