@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <title>OCR con GOT-OCR2_0</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        #preview img {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .loading {
+            font-style: italic;
+            color: #666;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            margin-top: 20px;
+            background: #eef;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>OCR con GOT-OCR2_0</h1>
+    <div class="container">
+        <p>Seleziona un'immagine dal tuo PC, poi clicca su "Analizza".</p>
+        <input type="file" id="fileInput" accept="image/*"><br><br>
+        <div id="preview"></div>
+        <button class="button" id="processBtn">Analizza</button>
+        <div id="status"></div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const processBtn = document.getElementById('processBtn');
+        const preview = document.getElementById('preview');
+        const status = document.getElementById('status');
+        const output = document.getElementById('output');
+
+        // Anteprima immagine
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
+            }
+        });
+
+        // Analisi OCR
+        processBtn.addEventListener('click', async () => {
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("Seleziona un'immagine prima!");
+                return;
+            }
+
+            status.textContent = "Elaborazione in corso...";
+            output.textContent = "";
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/ocr", {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Errore dalla API: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                status.textContent = "";
+                if (data.text) {
+                    output.textContent = "Testo estratto: " + data.text;
+                } else if (data.error) {
+                    output.textContent = "Errore: " + data.error;
+                } else {
+                    output.textContent = "Nessun testo riconosciuto.";
+                }
+
+            } catch (error) {
+                status.textContent = "";
+                output.textContent = "Si è verificato un errore: " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
